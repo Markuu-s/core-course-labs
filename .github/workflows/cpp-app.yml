@@ -58,8 +58,8 @@ jobs:
           wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2 && \
           tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2 && \
           cd boost_${BOOST_VERSION_MOD} && \
-          ./bootstrap.sh --prefix=/usr/local && \
-          ./b2 install && \
+          sudo ./bootstrap.sh --prefix=/usr/local && \
+          sudo ./b2 install && \
           rm -rf /tmp/*
   
       - name: Build tests
