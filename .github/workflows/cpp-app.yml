@@ -48,7 +48,7 @@ jobs:
             gdb \
             valgrind \
             cmake && \
-            apt-get clean 
+            sudo apt-get clean 
 
       - name: Set boost lib
         run: |
