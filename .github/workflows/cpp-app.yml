@@ -52,15 +52,15 @@ jobs:
 
       - name: Set boost lib
         run: |
-          cd /tmp && \
-          BOOST_VERSION=1.83.0 && \
-          BOOST_VERSION_MOD=$(echo ${BOOST_VERSION} | tr . _) && \
-          wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2 && \
-          tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2 && \
-          cd boost_${BOOST_VERSION_MOD} && \
+          sudo cd /tmp && \
+          sudo BOOST_VERSION=1.83.0 && \
+          sudo BOOST_VERSION_MOD=$(echo ${BOOST_VERSION} | tr . _) && \
+          sudo wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2 && \
+          sudo tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2 && \
+          sudo cd boost_${BOOST_VERSION_MOD} && \
           sudo ./bootstrap.sh --prefix=/usr/local && \
           sudo ./b2 install && \
-          rm -rf /tmp/*
+          sudo rm -rf /tmp/*
   
       - name: Build tests
         run: |
