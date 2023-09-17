@@ -53,7 +53,7 @@ jobs:
       - name: Set boost lib
         run: |
           cd /tmp && \
-          BOOST_VERSIOn=1.83.0 && \
+          BOOST_VERSION=1.83.0 && \
           BOOST_VERSION_MOD=$(echo ${BOOST_VERSION} | tr . _) && \
           wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2 && \
           tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2 && \
