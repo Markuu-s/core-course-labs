@@ -64,7 +64,7 @@ jobs:
   
       - name: Build tests
         run: |
-          cmake -Bbuild -H. -DCMAKE_BUILD_TYPE=Release -DTESTING=TRUE && cmake --build build
+          cmake -Bbuild -Hsrc -DCMAKE_BUILD_TYPE=Release -DTESTING=TRUE && cmake --build build
 
       - name: Test with unittest
         run: |
