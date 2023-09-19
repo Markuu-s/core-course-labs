@@ -25,13 +25,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v2
-        with:
-            path: /tmp/boost_1.83.0
-            key: boost-dependencies-${{ runner.os }}-${{ hashFiles('app_cpp/CMakeLists.txt') }}
   
       - name: Update apt
         run: |
@@ -68,17 +61,26 @@ jobs:
             sudo apt-get clean 
 
 
+      - name: Cache Boost source code
+        id: cache-boost-lib
+        uses: actions/cache@v3
+        with:
+          path: /tmp/boost_1.83.0
+          key: ${{ runner.os }}-boost-${{ hashFiles('**/apt-get-command') }}
+          
       - name: Set boost lib
         run: |
-          cd /tmp && \
-          BOOST_VERSION=1.83.0 && \
-          BOOST_VERSION_MOD=$(echo ${BOOST_VERSION} | tr . _) && \
-          sudo wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2 && \
-          sudo tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2 && \
-          cd boost_${BOOST_VERSION_MOD} && \
-          sudo ./bootstrap.sh --prefix=/usr/local && \
-          sudo ./b2 install && \
-          sudo rm -rf /tmp/*
+              if [[ -z "${{ steps.cache-boost-lib.outputs.cache-hit }}" ]]; then
+                cd /tmp
+                BOOST_VERSION=1.83.0
+                BOOST_VERSION_MOD=$(echo ${BOOST_VERSION} | tr . _)
+                sudo wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_MOD}.tar.bz2
+                sudo tar --bzip2 -xf boost_${BOOST_VERSION_MOD}.tar.bz2
+                cd boost_${BOOST_VERSION_MOD}
+                sudo ./bootstrap.sh --prefix=/usr/local
+                sudo ./b2 install
+                sudo rm -rf /tmp/boost_${BOOST_VERSION_MOD}*
+              fi
   
       - name: Build tests
         run: |
