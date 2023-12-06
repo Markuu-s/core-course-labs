@@ -68,9 +68,13 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-              # - name: volumemountsname
-                # mountPath: "/config.json"
-                # subPath: config.json
+      initContainers:
+        - name: install
+          image: busybox
+          command: ['sh', '-c', 'wget -O /data/test.html https://darksouls.fandom.com/wiki/Dark_Souls_Wiki']
+          volumeMounts:
+            - name: shared-data
+              mountPath: "/data"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
