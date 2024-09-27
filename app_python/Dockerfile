@@ -1,14 +1,14 @@
-FROM python:3
-
-RUN pip install --no-cache-dir  \
-    Flask  \
-    pytz
+FROM python:3.10-alpine3.18
 
 WORKDIR /app
-COPY ./main.py ./
 
-RUN useradd -ms /bin/bash user_start && chown -R user_start /app/
-USER user_start
+COPY ./requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/__init__.py ./
+
+RUN adduser no_root_user --system -S /bin/nologin -D -H
+USER no_root_user
 
 ENV PYTHONPATH .
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3", "__init__.py"]
